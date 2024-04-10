@@ -1,0 +1,52 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- {% block title %}{{ restaurant.name }}{% endblock title %} -->
+<h1>Welcome to the {{restaurant.name}}</h1>
+
+<h2>Our Products</h2>
+
+{% for product in products %}
+<p>{{ product.name }} - {{ product.price }}</p>
+{% endfor %}
+
+
+<h2>Add product to order</h2>
+<form id="order-item-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" id="submit-btn">Agregar producto a la orden</button>
+    <input type="hidden" name="order_id" value="{{ order_id }}">
+</form>
+
+<div id="div-products-in-order">
+
+</div>
+
+<br>
+<br>
+
+<form id="create-order-form" method="post" action="{% url 'orders' restaurant.id customer_name %}"
+    style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="order_id" value="{{ order_id }}">
+
+    <label for="id_customer_name">A nombre de:</label>
+    <input type="text" id="id_customer_name" name="customer_name">
+
+    <br>
+    <br>
+    <label for="id_customer_name">Para llevar?</label>
+    <input type="checkbox" name="is_takeaway">
+
+    <br>
+    <br>
+    <button type="submit" id="submit-btn-order">Crear orden</button>
+</form>
+
+<script src="{% static 'orders/forms.js' %}"></script>
+
+
+
+{% endblock content %}

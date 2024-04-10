@@ -1,0 +1,30 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{restaurant.name}}</h1>
+
+<h2>Su factura</h2>
+
+<div>
+    <p>Nombre: {{order.customer_name}}</p>
+    <p>Total: {{order.total}}</p>
+
+    <h4>Productos</h4>
+    <ul>
+        {% for product, quantity in product_quantities.items %}
+        <li>{{ product.name }} - {{ quantity }}</li>
+        {% endfor %}
+    </ul>
+    <p>Fecha: {{order.date}} (en UTC)</p>
+
+    {% if order.is_takeaway %}
+    <p>Para llevar</p>
+    {% else %}
+    <p>Para comer aqui</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock content %}

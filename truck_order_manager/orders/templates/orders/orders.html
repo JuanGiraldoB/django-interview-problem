@@ -1,0 +1,121 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- {% block title %}{{ restaurant.name }}{% endblock title %} -->
+<h1>Welcome to the {{restaurant.name}}</h1>
+
+<h2>En espera</h2>
+
+<form id="change-order-status-form" data-customer-name="{{ customer_name }}"
+    data-restaurant-id="{{ orders.0.restaurant.id }}">
+    {% csrf_token %}
+    {% for order in orders %}
+
+    {% if order.status == 'ESPERA'%}
+
+
+    <p>{{order.get_status_display }}</p>
+
+    <h4>Productos</h4>
+    <ul>
+        {% for product, quantity in order.product_quantities.items %}
+        <li>{{ product.name }} - {{ quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if order.is_takeaway %}
+    <p>Para llevar</p>
+    {% else %}
+    <p>Para comer aqui</p>
+    {% endif %}
+
+    <label for="cambiar_estado">Preparar?</label>
+    <input type="checkbox" name="cambiar_estado" value="{{order.id}}">
+    <p>------------------------</p>
+    {% endif %}
+    {% endfor %}
+    <button type="submit" id="submit-btn-order">Preparar</button>
+</form>
+<p>######################################################</p>
+
+<h2>En preparación</h2>
+
+<form id="change-order-status-form-preparacion" data-customer-name="{{ customer_name }}"
+    data-restaurant-id="{{ orders.0.restaurant.id }}">
+    {% csrf_token %}
+    {% for order in orders %}
+
+    {% if order.status == 'PREPARACION'%}
+
+
+    <p>{{order.get_status_display }}</p>
+
+    <h4>Productos</h4>
+    <ul>
+        {% for product, quantity in order.product_quantities.items %}
+        <li>{{ product.name }} - {{ quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if order.is_takeaway %}
+    <p>Para llevar</p>
+    {% else %}
+    <p>Para comer aqui</p>
+    {% endif %}
+
+    <label for="cambiar_estado">Terminar?</label>
+    <input type="checkbox" name="cambiar_estado_terminado" value="{{order.id}}">
+    <p>------------------------</p>
+    {% endif %}
+    {% endfor %}
+    <button type="submit" id="submit-btn-order">Terminar</button>
+</form>
+<p>######################################################</p>
+
+<h2>Completados</h2>
+<div>
+    {% for order in orders %}
+
+    {% if order.status == 'COMPLETADO'%}
+
+    <p>{{order.get_status_display }}</p>
+
+    <h4>Productos</h4>
+    <ul>
+        {% for product, quantity in order.product_quantities.items %}
+        <li>{{ product.name }} - {{ quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if order.is_takeaway %}
+    <p>Para llevar</p>
+    {% else %}
+    <p>Para comer aqui</p>
+    {% endif %}
+    {% if order.customer_name == customer_name %}
+    <form id="change-order-status-form-completado" method="get"
+        action="{% url 'invoice' order.restaurant.id customer_name order.id %}">
+        <button type="submit" id="submit-btn-order">Ver Factura</button>
+    </form>
+    {% endif %}
+    <p>------------------------</p>
+    {% endif %}
+
+    {% endfor %}
+</div>
+
+
+
+<br>
+
+<!-- <form id="aux-form" style="display: none;">
+    <input type="checkbox">
+    {% csrf_token %}
+</form> -->
+
+<script src="{% static 'orders/order_status_changes.js' %}"></script>
+
+
+
+{% endblock content %}
