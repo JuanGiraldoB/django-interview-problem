@@ -29,5 +29,7 @@ class OrderItemForm(forms.ModelForm):
         model = OrderItem
         fields = ['product', 'quantity', 'special_instructions']
         labels = {
-            'special_instructions': 'Observaciones adicionales'
+            'special_instructions': 'Observaciones adicionales',
+            'product': 'Producto',
+            'quantity': 'Cantidad'
         }

@@ -3,10 +3,10 @@
 {% block content %}
 
 <!-- {% block title %}{{ restaurant.name }}{% endblock title %} -->
-<h1>Welcome to the {{restaurant.name}}</h1>
+<h1>Ordenes</h1>
 
 <h2>En espera</h2>
-
+<p>######################################################</p>
 <form id="change-order-status-form" data-customer-name="{{ customer_name }}"
     data-restaurant-id="{{ orders.0.restaurant.id }}">
     {% csrf_token %}
@@ -40,7 +40,7 @@
 <p>######################################################</p>
 
 <h2>En preparación</h2>
-
+<p>######################################################</p>
 <form id="change-order-status-form-preparacion" data-customer-name="{{ customer_name }}"
     data-restaurant-id="{{ orders.0.restaurant.id }}">
     {% csrf_token %}
@@ -74,6 +74,7 @@
 <p>######################################################</p>
 
 <h2>Completados</h2>
+<p>######################################################</p>
 <div>
     {% for order in orders %}
 
